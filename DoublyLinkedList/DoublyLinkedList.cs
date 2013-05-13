@@ -65,7 +65,7 @@ namespace Binarysharp.Collections
         /// <remarks>Complexity: O(1).</remarks>
         public bool IsEmpty
         {
-            get { return First == null; }
+            get { return Count == 0; }
         }
 
         /// <summary>
@@ -136,8 +136,6 @@ namespace Binarysharp.Collections
         {
             // Create a node
             var node = new DoublyLinkedNode<T>(value);
-            // Increment the length
-            Count++;
 
             // If the linked list is empty
             if (IsEmpty)
@@ -152,6 +150,8 @@ namespace Binarysharp.Collections
                 node.Next = First;
             }
 
+            // Increment the length
+            Count++;
             // The node is the first
             First = node;
         }
@@ -176,9 +176,7 @@ namespace Binarysharp.Collections
         {
             // Create a node
             var node = new DoublyLinkedNode<T>(value);
-            // Increment the length
-            Count++;
-
+            
             // If the linked list is empty
             if (IsEmpty)
             {
@@ -192,6 +190,8 @@ namespace Binarysharp.Collections
                 node.Previous = Last;
             }
 
+            // Increment the length
+            Count++;
             // The node is the last
             Last = node;
         }
@@ -408,11 +408,18 @@ namespace Binarysharp.Collections
                 // Get the first node
                 var deleted = First;
                 // Remove the link in the second node that refers the first
-                deleted.Next.Previous = null;
+                if (deleted.Next != null)
+                    deleted.Next.Previous = null;
                 // Set the second node as first
                 First = deleted.Next;
                 // Remove the 'Next' link in the deleted node
                 deleted.Next = null;
+                // Check if the list is now empty
+                if (IsEmpty)
+                {
+                    // Clear the linked list
+                    Clear();
+                }
             }
         }
         #endregion
@@ -431,11 +438,18 @@ namespace Binarysharp.Collections
                 // Get the last node
                 var deleted = Last;
                 // Remove the link in the before-last node that refers the last
-                deleted.Previous.Next = null;
+                if (deleted.Previous != null)
+                    deleted.Previous.Next = null;
                 // Set the before-last node as last
                 Last = deleted.Previous;
                 // Remove the 'Previous' link in the deleted node
                 deleted.Previous = null;
+                // Check if the list is now empty
+                if (IsEmpty)
+                {
+                    // Clear the linked list
+                    Clear();
+                }
             }
         }
         #endregion
